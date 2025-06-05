@@ -1,0 +1,31 @@
+[
+  {
+    "type": "openFile",
+    "path": "src/index.html"
+  },
+  {
+    "type": "goto",
+    "line": 12,
+    "column": 9
+  },
+  {
+    "type": "typeTextFromFile",
+    "path": "./index.txt"
+  },
+  {
+    "type": "openFile",
+    "path": "src/style.css"
+  },
+  {
+    "type": "typeTextFromFile",
+    "path": "./css.txt"
+  },
+  {
+    "type": "openFile",
+    "path": "src/script.js"
+  },
+  {
+    "type": "typeTextFromFile",
+    "path": "./script.txt"
+  }
+]
