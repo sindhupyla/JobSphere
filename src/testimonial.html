@@ -10,6 +10,7 @@
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -30,6 +31,10 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 </head>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
 
 <body>
     <div class="container-xxl bg-white p-0">
@@ -64,9 +69,8 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a href="category.html" class="dropdown-item">Job Category</a>
-                            <a href="testimonial.html" class="dropdown-item active">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404</a>
+                            <a href="category.html" class="dropdown-item">Resume Tips</a>
+                            <a href="testimonial.html" class="dropdown-item active">Blogs</a>
                         </div>
                     </div>
                     <a href="contact.html" class="nav-item nav-link">Contact</a>
@@ -80,12 +84,11 @@
         <!-- Header End -->
         <div class="container-xxl py-5 bg-dark page-header mb-5">
             <div class="container my-5 pt-5 pb-4">
-                <h1 class="display-3 text-white mb-3 animated slideInDown">Testimonial</h1>
+                <h1 class="display-3 text-white mb-3 animated slideInDown">Career Blogs</h1>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb text-uppercase">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page">Testimonial</li>
+                        <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">Blogs</li>
                     </ol>
                 </nav>
             </div>
@@ -94,59 +97,64 @@
 
 
         <!-- Testimonial Start -->
-        <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-            <div class="container">
-                <h1 class="text-center mb-5">Our Clients Say!!!</h1>
-                <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item bg-light rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded" src="img/testimonial-1.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-light rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded" src="img/testimonial-2.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-light rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded" src="img/testimonial-3.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-item bg-light rounded p-4">
-                        <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                        <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                        <div class="d-flex align-items-center">
-                            <img class="img-fluid flex-shrink-0 rounded" src="img/testimonial-4.jpg" style="width: 50px; height: 50px;">
-                            <div class="ps-3">
-                                <h5 class="mb-1">Client Name</h5>
-                                <small>Profession</small>
-                            </div>
-                        </div>
-                    </div>
+       <!-- Blog Section Start -->
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="text-center mb-5">Career Blog Insights</h1>
+        <div class="row g-4">
+            
+            <div class="col-12">
+                <div class="blog-card">
+                    <h4>1. How to Craft a Winning Resume</h4>
+                    <p>Learn the key elements of a strong resume that stands out to recruiters and beats ATS systems...</p>
+                    <a href="blog1.html">Read More &raquo;</a>
                 </div>
             </div>
-        </div>
-        <!-- Testimonial End -->
 
+            <div class="col-12">
+                <div class="blog-card">
+                    <h4>2. Mastering Interview Etiquette</h4>
+                    <p>From punctuality to post-interview follow-ups — discover what makes a lasting impression in interviews.</p>
+                    <a href="blog2.html">Read More &raquo;</a>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="blog-card">
+                    <h4>3. LinkedIn Profile Optimization</h4>
+                    <p>Boost your visibility to recruiters by crafting a professional and compelling LinkedIn presence.</p>
+                    <a href="blog3.html">Read More &raquo;</a>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="blog-card">
+                    <h4>4. Top 10 Skills Employers Look For</h4>
+                    <p>Explore both technical and soft skills that are trending across industries in 2025.</p>
+                    <a href="blog4.html">Read More &raquo;</a>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="blog-card">
+                    <h4>5. Building an Impressive Project Portfolio</h4>
+                    <p>Whether you're a fresher or experienced, show off your real-world skills through effective project showcases.</p>
+                    <a href="blog5.html">Read More &raquo;</a>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="blog-card">
+                    <h4>6. Career Planning for Students</h4>
+                    <p>Discover how early planning, internships, and goal setting can shape your career success path.</p>
+                    <a href="blog6.html">Read More &raquo;</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Blog Section End -->
 
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">

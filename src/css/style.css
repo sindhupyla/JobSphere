@@ -330,6 +330,51 @@
 }
 
 
+
+.blog-card {
+    background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    border-left: 6px solid var(--primary);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.05);
+    transform: scale(1);
+}
+
+.blog-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 35px rgba(0, 123, 255, 0.25);
+    background: linear-gradient(145deg, #e9f2ff, #ffffff);
+}
+
+.blog-card h4 {
+    color: var(--primary);
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.blog-card p {
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.blog-card a {
+    color: var(--primary);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.blog-card a:hover {
+    text-decoration: underline;
+    letter-spacing: 0.5px;
+}
+
+
+
 /*** Footer ***/
 .footer .btn.btn-social {
     margin-right: 5px;
