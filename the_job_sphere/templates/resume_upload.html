@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html>
-<head><title>Resume Upload</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Resume & Find Jobs</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f9f9f9; }
+        h1 { text-align: center; }
+        form { max-width: 400px; margin: 0 auto 30px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 8px rgba(0,0,0,0.1); }
+        input[type="file"] { margin-bottom: 15px; }
+        button { padding: 10px 15px; cursor: pointer; }
+        .keywords { max-width: 600px; margin: 0 auto 20px auto; background: #e8f0fe; padding: 10px 20px; border-radius: 5px; }
+        .jobs { max-width: 700px; margin: 0 auto; }
+        .job { background-color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .job h2 { margin: 0; }
+        .job p { margin: 5px 0; }
+    </style>
+</head>
 <body>
-<h1>Upload Your Resume (TXT format)</h1>
-<form method="POST" enctype="multipart/form-data">
-  <input type="file" name="resume" accept=".txt" required>
-  <input type="submit" value="Upload & Analyze">
-</form>
-<a href="/">Back</a>
+    <h1>Upload Resume & Find Jobs</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="resume" accept=".pdf,.docx" required>
+        <br>
+        <button type="submit">Upload & Search Jobs</button>
+    </form>
+    {% if keywords %}
+        <div class="keywords">
+            <h3>Extracted Keywords from Resume:</h3>
+            <p>{{ keywords | join(', ') }}</p>
+        </div>
+    {% endif %}
+    {% if jobs %}
+        <div class="jobs">
+            <h2>Job Matches Based on Your Resume Keywords:</h2>
+            {% for job in jobs %}
+                <div class="job">
+                    <h2><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h2>
+                    <p><strong>Company:</strong> {{ job.company }}</p>
+                    <p><strong>Location:</strong> {{ job.location }}</p>
+                    <p>{{ job.description[:200] }}...</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% elif keywords %}
+        <p>No job matches found based on your resume keywords.</p>
+    {% endif %}
+    <p style="text-align:center;"><a href="/">← Back to Job Search</a></p>
 </body>
 </html>

@@ -1,0 +1,145 @@
+<!-- templates/market_trends.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📊 Job Market Trends 2025</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f2f5;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 40px;
+    }
+    .chart-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 900px;
+      margin: 20px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    canvas {
+      width: 100% !important;
+      max-height: 400px;
+    }
+    .section {
+      text-align: center;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      font-size: 18px;
+    }
+    ul li {
+      padding: 5px 0;
+    }
+    .top-right-button {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+}
+
+.home-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+}
+
+.home-button:hover {
+  background-color: #3c7dc2;
+}
+  </style>
+</head>
+<body>
+
+  <h1>📈 Job Market Trends - 2025</h1>
+
+  <div class="chart-container">
+    <h2>🔥 Most In-Demand Skills</h2>
+    <canvas id="skillsChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h2>💼 Popular Job Titles</h2>
+    <canvas id="jobTitlesChart"></canvas>
+  </div>
+
+  <div class="chart-container">
+    <h2>📍 Top Hiring Locations (India)</h2>
+    <div class="section">
+      <ul>
+        <li>📍 Bangalore</li>
+        <li>📍 Hyderabad</li>
+        <li>📍 Pune</li>
+        <li>📍 Chennai</li>
+        <li>📍 Gurgaon</li>
+        <li>🌐 Remote (PAN India)</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // Updated In-Demand Skills Data
+    const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+    new Chart(skillsCtx, {
+      type: 'bar',
+      data: {
+        labels: [
+          'Python', 'SQL', 'React.js', 'Java', 'TypeScript', 'Cloud (AWS/Azure)', 
+          'Machine Learning', 'Tableau/Power BI', 'Docker/Kubernetes', 
+          'Git/GitHub', 'Linux/Bash', 'Communication Skills'
+        ],
+        datasets: [{
+          label: 'Demand Level (relative)',
+          data: [95, 92, 88, 86, 84, 82, 80, 78, 75, 72, 70, 68],
+          backgroundColor: '#3498db'
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    // Popular Job Titles Data
+    const titlesCtx = document.getElementById('jobTitlesChart').getContext('2d');
+    new Chart(titlesCtx, {
+      type: 'pie',
+      data: {
+        labels: [
+          'Data Analyst', 'Full Stack Dev', 'ML Engineer',
+          'Cloud Architect', 'Frontend Dev', 'DevOps Engg', 'Product Manager'
+        ],
+        datasets: [{
+          label: 'Job Share (%)',
+          data: [20, 18, 15, 12, 12, 10, 13],
+          backgroundColor: [
+            '#e74c3c', '#2ecc71', '#f39c12',
+            '#9b59b6', '#1abc9c', '#e67e22', '#34495e'
+          ]
+        }]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  </script>
+  <div class="top-right-button">
+  <a href="more.html" class="home-button">Back</a>
+  </div>
+
+</body>
+</html>

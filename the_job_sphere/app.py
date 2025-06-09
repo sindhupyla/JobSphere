@@ -1,14 +1,21 @@
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template, request, redirect, url_for
 import requests
+import os
+from werkzeug.utils import secure_filename
+import docx2txt
+import PyPDF2
+import re
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = 'uploads'
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Replace with your actual Adzuna credentials
+# Adzuna API credentials (replace with your own)
 ADZUNA_APP_ID = 'e6a06608'
 ADZUNA_APP_KEY = 'b7c5080187203f791e584ac80d804820'
 
-def fetch_jobs(query, location='India'):
-    url = f'https://api.adzuna.com/v1/api/jobs/in/search/1'
+def fetch_jobs(query, country='in', location='', job_type='', experience='', remote=False):
+    url = f'https://api.adzuna.com/v1/api/jobs/{country}/search/1'
     params = {
         'app_id': ADZUNA_APP_ID,
         'app_key': ADZUNA_APP_KEY,
@@ -17,6 +24,17 @@ def fetch_jobs(query, location='India'):
         'where': location,
         'content-type': 'application/json'
     }
+    if job_type.lower() == 'full-time':
+        params['full_time'] = 1
+    elif job_type.lower() == 'part-time':
+        params['part_time'] = 1
+
+    if experience:
+        params['experience'] = experience.lower()
+
+    if remote:
+        params['telecommute'] = 1
+
     response = requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
@@ -34,53 +52,99 @@ def fetch_jobs(query, location='India'):
         print(f"Error fetching jobs: {response.status_code}")
         return []
 
+def extract_keywords(text):
+    # Simple keyword extraction by finding frequent words (excluding common stopwords)
+    stopwords = set([
+        'the', 'and', 'to', 'of', 'in', 'a', 'for', 'with', 'on', 'as', 'is',
+        'at', 'by', 'an', 'be', 'this', 'that', 'or', 'from', 'are', 'we', 'you',
+        'your', 'will', 'can', 'which', 'our', 'have', 'has', 'also', 'but', 'if',
+        'not', 'may', 'more', 'such', 'all', 'these', 'they', 'their'
+    ])
+    words = re.findall(r'\b\w+\b', text.lower())
+    freq = {}
+    for w in words:
+        if w not in stopwords and len(w) > 2:
+            freq[w] = freq.get(w, 0) + 1
+    # Return top 10 keywords sorted by frequency
+    keywords = sorted(freq, key=freq.get, reverse=True)[:10]
+    return keywords
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     jobs = []
-    query = ''
+    query = country = location = job_type = experience = ''
+    remote = False
+
     if request.method == 'POST':
         query = request.form['query']
-        jobs = fetch_jobs(query)
-    return render_template_string(template, jobs=jobs, query=query)
+        country = request.form.get('country', 'in')
+        location = request.form.get('location', '')
+        job_type = request.form.get('job_type', '')
+        experience = request.form.get('experience', '')
+        remote = request.form.get('remote') == 'on'
+        jobs = fetch_jobs(query, country, location, job_type, experience, remote)
 
-template = '''
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Job Search</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
-        h1 { text-align: center; }
-        form { text-align: center; margin-bottom: 30px; }
-        input[type="text"] { width: 300px; padding: 10px; }
-        button { padding: 10px 20px; }
-        .job { background-color: #fff; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
-        .job h2 { margin: 0; }
-        .job p { margin: 5px 0; }
-    </style>
-</head>
-<body>
-    <h1>Job Search</h1>
-    <form method="POST">
-        <input type="text" name="query" placeholder="Enter job title" value="{{ query }}" required>
-        <button type="submit">Search</button>
-    </form>
-    {% if jobs %}
-        <h2>Results for "{{ query }}":</h2>
-        {% for job in jobs %}
-            <div class="job">
-                <h2><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h2>
-                <p><strong>Company:</strong> {{ job.company }}</p>
-                <p><strong>Location:</strong> {{ job.location }}</p>
-                <p>{{ job.description[:200] }}...</p>
-            </div>
-        {% endfor %}
-    {% elif query %}
-        <p>No jobs found for "{{ query }}". Please try a different keyword.</p>
-    {% endif %}
-</body>
-</html>
-'''
+    return render_template("main.html", jobs=jobs, query=query, country=country,
+                                  location=location, job_type=job_type,
+                                  experience=experience, remote=remote)
+@app.route('/more')
+def more():
+    return render_template('more.html')
+
+
+
+
+@app.route('/upload_resume', methods=['GET', 'POST'])
+def upload_resume():
+    jobs = []
+    keywords = []
+    if request.method == 'POST':
+        if 'resume' not in request.files:
+            return "No file part"
+        file = request.files['resume']
+        if file.filename == '':
+            return "No selected file"
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        # Extract text depending on file type
+        text = ''
+        if filename.endswith('.pdf'):
+            with open(filepath, 'rb') as f:
+                reader = PyPDF2.PdfReader(f)
+                for page in reader.pages:
+                    text += page.extract_text() or ''
+        elif filename.endswith('.docx'):
+            text = docx2txt.process(filepath)
+        else:
+            return "Unsupported file type. Please upload PDF or DOCX."
+
+        keywords = extract_keywords(text)
+        query = ' '.join(keywords)
+
+        # Fetch jobs based on extracted keywords
+        jobs = fetch_jobs(query)
+
+        # If no jobs found, try searching each keyword individually and merge
+        if not jobs:
+            combined_jobs = []
+            for kw in keywords:
+                partial_jobs = fetch_jobs(kw)
+                combined_jobs.extend(partial_jobs)
+            seen = set()
+            unique_jobs = []
+            for job in combined_jobs:
+                if job['url'] not in seen:
+                    seen.add(job['url'])
+                    unique_jobs.append(job)
+            jobs = unique_jobs
+
+    return render_template("resume_upload.html", jobs=jobs, keywords=keywords)
+
+# HTML Templates
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

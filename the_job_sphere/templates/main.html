@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Search with Resume Upload</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+
+    
+    <script>
+        function toggleFilters() {
+            var x = document.getElementById("filterSection");
+            if (x.style.display === "none" || x.style.display === "") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Job Search</h1>
+     
+    <a href="/upload_resume" class="try-resume">🔎 Try Job Search via Resume Upload</a>
+    <div class="center-image-wrapper">
+        <img src="{{ url_for('static', filename='4565.jpg') }}" class="center-image" alt="Center Background">
+    </div>
+
+    <form method="POST">
+        <input type="text" name="query" placeholder="Enter job title" value="{{ query }}" required>
+        <button type="submit">Search</button>
+        <button type="button" class="filter-toggle" onclick="toggleFilters()">Add Filters</button>
+        <div class="filters" id="filterSection">
+            <br>
+            <select name="country">
+                <option value="in" {% if country == 'in' %}selected{% endif %}>India</option>
+                <option value="us" {% if country == 'us' %}selected{% endif %}>USA</option>
+                <option value="gb" {% if country == 'gb' %}selected{% endif %}>UK</option>
+                <option value="ca" {% if country == 'ca' %}selected{% endif %}>Canada</option>
+            </select>
+            <input type="text" name="location" placeholder="City/Location" value="{{ location }}">
+            <select name="job_type">
+                <option value="">Any Type</option>
+                <option value="Full-Time" {% if job_type == 'Full-Time' %}selected{% endif %}>Full-Time</option>
+                <option value="Part-Time" {% if job_type == 'Part-Time' %}selected{% endif %}>Part-Time</option>
+            </select>
+            <select name="experience">
+                <option value="">Any Level</option>
+                <option value="entry" {% if experience == 'entry' %}selected{% endif %}>Entry</option>
+                <option value="mid" {% if experience == 'mid' %}selected{% endif %}>Mid</option>
+                <option value="senior" {% if experience == 'senior' %}selected{% endif %}>Senior</option>
+            </select>
+            <label><input type="checkbox" name="remote" {% if remote %}checked{% endif %}> Remote</label>
+            <br>
+            <button type="submit">Apply Filters</button>
+        </div>
+    </form>
+    {% if jobs %}
+        <h2>Results for "{{ query }}":</h2>
+        {% for job in jobs %}
+            <div class="job">
+                <h2><a href="{{ job.url }}" target="_blank">{{ job.title }}</a></h2>
+                <p><strong>Company:</strong> {{ job.company }}</p>
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p>{{ job.description[:200] }}...</p>
+            </div>
+        {% endfor %}
+    {% elif query %}
+        <p>No jobs found for "{{ query }}". Try different filters.</p>
+    {% endif %}
+</body>
+</html>
